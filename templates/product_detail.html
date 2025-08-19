@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<article class="product-detail">
+	<h2>{{ product.name }}</h2>
+	<p class="muted">Category: {{ product.category }}</p>
+	<p>{{ product.description }}</p>
+	<p><strong>Price:</strong> ${{ '%.2f'|format(product.price) }}</p>
+	<p><strong>Stock:</strong> {{ product.stock }}</p>
+	<form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+		<input type="number" min="1" name="quantity" value="1">
+		<button type="submit" {% if product.stock <= 0 %}disabled{% endif %}>
+			{% if product.stock <= 0 %}Out of stock{% else %}Add to cart{% endif %}
+		</button>
+	</form>
+</article>
+{% endblock %}

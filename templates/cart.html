@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Cart</h2>
+<form method="post" action="{{ url_for('update_cart') }}">
+	<table class="cart-table">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Subtotal</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in products %}
+				<tr>
+					<td>{{ product.name }}</td>
+					<td>${{ '%.2f'|format(product.price) }}</td>
+					<td><input type="number" min="0" name="qty_{{ product.id }}" value="{{ cart[product.id|string] }}"></td>
+					<td>${{ '%.2f'|format(product.price * cart[product.id|string]) }}</td>
+					<td>
+						<form method="post" action="{{ url_for('remove_from_cart', product_id=product.id) }}">
+							<button type="submit">Remove</button>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="cart-summary">
+		<p><strong>Subtotal:</strong> ${{ '%.2f'|format(subtotal) }}</p>
+		<div class="actions">
+			<button type="submit">Update Cart</button>
+			<a class="button" href="{{ url_for('checkout') }}">Proceed to Checkout</a>
+		</div>
+	</div>
+</form>
+{% endblock %}
