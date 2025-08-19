@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Products</h2>
+<form method="get" class="search-form">
+	<input type="text" name="q" placeholder="Search products" value="{{ query }}">
+	<select name="category">
+		<option value="">All categories</option>
+		{% for cat in categories %}
+			<option value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+		{% endfor %}
+	</select>
+	<button type="submit">Search</button>
+</form>
+
+<div class="grid">
+	{% for product in products %}
+		<div class="card">
+			<h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+			<p class="muted">{{ product.category }}</p>
+			<p>{{ product.description[:120] }}{% if product.description|length > 120 %}...{% endif %}</p>
+			<div class="card-footer">
+				<strong>${{ '%.2f'|format(product.price) }}</strong>
+				<form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+					<input type="number" min="1" name="quantity" value="1">
+					<button type="submit" {% if product.stock <= 0 %}disabled{% endif %}>
+						{% if product.stock <= 0 %}Out of stock{% else %}Add to cart{% endif %}
+					</button>
+				</form>
+			</div>
+		</div>
+	{% else %}
+		<p>No products found.</p>
+	{% endfor %}
+</div>
+{% endblock %}

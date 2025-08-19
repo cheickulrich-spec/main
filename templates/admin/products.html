@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Products (Admin)</h2>
+<div class="actions">
+	<a class="button" href="{{ url_for('admin_product_new') }}">New Product</a>
+	<form method="post" action="{{ url_for('admin_logout') }}" style="display:inline">
+		<button type="submit">Logout</button>
+	</form>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Price</th>
+			<th>Stock</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for p in products %}
+		<tr>
+			<td>{{ p.id }}</td>
+			<td>{{ p.name }}</td>
+			<td>{{ p.category }}</td>
+			<td>${{ '%.2f'|format(p.price) }}</td>
+			<td>{{ p.stock }}</td>
+			<td>
+				<a href="{{ url_for('admin_product_edit', product_id=p.id) }}">Edit</a>
+				<form method="post" action="{{ url_for('admin_product_delete', product_id=p.id) }}" style="display:inline">
+					<button type="submit" onclick="return confirm('Delete this product?')">Delete</button>
+				</form>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

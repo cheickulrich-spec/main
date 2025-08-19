@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Checkout</h2>
+<form method="post" class="form">
+	<label>
+		<span>Name</span>
+		<input type="text" name="name" required>
+	</label>
+	<label>
+		<span>Phone</span>
+		<input type="tel" name="phone" required>
+	</label>
+	<label>
+		<span>Address</span>
+		<textarea name="address" required></textarea>
+	</label>
+	<button type="submit">Place Order</button>
+</form>
+{% endblock %}
